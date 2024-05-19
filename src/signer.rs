@@ -53,37 +53,37 @@ impl Signer for ICSigner {
     fn public_key(&self) -> transaction::prelude::PublicKey {
         PublicKey::from(self.public_key)
     }
+
     fn sign_with_public_key(
         &self,
         message_hash: &impl transaction::prelude::IsHash,
     ) -> transaction::prelude::SignatureWithPublicKeyV1 {
-        let hash = Box::new(message_hash.as_slice().to_vec());
+        let hash_slice = message_hash.as_slice().to_vec();
+        let hash = Box::new(hash_slice.clone());
         let key = Box::new(self.key_info.clone().to_owned());
         ic_cdk::spawn(async move {
             let sig = _sign(key, hash.clone()).await.unwrap();
             put_to_context(hash.as_slice().to_vec(), sig.clone());
         });
-        let result = get_from_context(message_hash.as_slice().to_vec())
-            .unwrap()
-            .into();
-        remove_from_context(message_hash.as_slice().to_vec());
-        result
+        let result = get_from_context(hash_slice.clone());
+        remove_from_context(hash_slice);
+        result.unwrap().into()
     }
+
     fn sign_without_public_key(
         &self,
         message_hash: &impl transaction::prelude::IsHash,
     ) -> transaction::prelude::SignatureV1 {
         let key = Box::new(self.key_info.clone().to_owned());
-        let h = Box::new(message_hash.as_slice().to_vec());
+        let hash_slice = message_hash.as_slice().to_vec();
+        let h = Box::new(hash_slice.clone());
         ic_cdk::spawn(async move {
             let sig = _sign(key, h.clone()).await.unwrap();
             put_to_context(h.as_slice().to_vec(), sig.clone());
         });
-        let result = get_from_context(message_hash.as_slice().to_vec())
-            .unwrap()
-            .into();
-        remove_from_context(message_hash.as_slice().to_vec());
-        result
+        let result = get_from_context(hash_slice.clone());
+        remove_from_context(hash_slice);
+        result.unwrap().into()
     }
 }
 
