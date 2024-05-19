@@ -1,5 +1,3 @@
-use std::str::FromStr;
-
 use anyhow::Result;
 use async_trait::async_trait;
 use ic_web3_rs::ic::{get_public_key, ic_raw_sign, recover_address, KeyInfo};
@@ -71,7 +69,9 @@ impl ICSigner {
         let sign_result = ic_raw_sign(h, key_info)
             .await
             .map_err(|e| anyhow::anyhow!(e))?;
-        let v:u8 = if recover_address(message_hash.as_slice().to_vec(), sign_result.clone(), 0) == self.public_key.to_string() {
+        let v: u8 = if recover_address(message_hash.as_slice().to_vec(), sign_result.clone(), 0)
+            == self.public_key.to_string()
+        {
             0
         } else {
             1
