@@ -514,6 +514,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "candid",
+ "hex",
  "ic-cdk",
  "ic-radix-signer",
 ]
@@ -748,6 +749,7 @@ dependencies = [
  "anyhow",
  "async-trait",
  "futures",
+ "hex",
  "ic-cdk",
  "ic-web3-rs",
  "radix-common",

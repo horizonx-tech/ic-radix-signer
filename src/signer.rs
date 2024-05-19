@@ -1,6 +1,8 @@
+use std::str::FromStr;
+
 use anyhow::Result;
 use async_trait::async_trait;
-use ic_web3_rs::ic::{get_public_key, ic_raw_sign, KeyInfo};
+use ic_web3_rs::ic::{get_public_key, ic_raw_sign, recover_address, KeyInfo};
 use radix_common::crypto::{IsHash, PublicKey, Secp256k1PublicKey, Secp256k1Signature};
 use radix_transactions::model::{SignatureV1, SignatureWithPublicKeyV1};
 
@@ -38,6 +40,7 @@ impl ICSigner {
         })
     }
 }
+
 #[async_trait]
 impl Signer for ICSigner {
     async fn public_key(&self) -> PublicKey {
@@ -68,8 +71,14 @@ impl ICSigner {
         let sign_result = ic_raw_sign(h, key_info)
             .await
             .map_err(|e| anyhow::anyhow!(e))?;
-
-        Ok(Secp256k1Signature::try_from(sign_result.as_slice())?)
+        let v:u8 = if recover_address(message_hash.as_slice().to_vec(), sign_result.clone(), 0) == self.public_key.to_string() {
+            0
+        } else {
+            1
+        };
+        let mut result = v.to_be_bytes().to_vec();
+        result.extend(sign_result);
+        Ok(Secp256k1Signature::try_from(result.as_slice())?)
     }
 }
 

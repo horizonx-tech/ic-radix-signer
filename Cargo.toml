@@ -13,3 +13,4 @@ radix-common = { git = "https://github.com/radixdlt/radixdlt-scrypto" }
 ic-cdk = "0.11.3"
 futures = "0.3.30"
 async-trait = "0.1.80"
+hex = "0.4.3"

@@ -738,6 +738,7 @@ dependencies = [
  "anyhow",
  "async-trait",
  "futures",
+ "hex",
  "ic-cdk",
  "ic-web3-rs",
  "radix-common",
