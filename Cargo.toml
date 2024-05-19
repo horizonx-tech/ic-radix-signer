@@ -11,3 +11,5 @@ ic-web3-rs = "0.1.6"
 radix-transactions = { git = "https://github.com/radixdlt/radixdlt-scrypto" }
 radix-common = { git = "https://github.com/radixdlt/radixdlt-scrypto" }
 ic-cdk = "0.11.3"
+futures = "0.3.30"
+async-trait = "0.1.80"
