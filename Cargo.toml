@@ -2,14 +2,18 @@
 name = "ic-radix-signer"
 version = "0.1.0"
 edition = "2021"
+description = "A simple Radix DLT signer for the Internet Computer"
+tags = ["ic", "radix", "signer", "internet-computer"]
+authors = ["hide-yoshi"]
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 anyhow = "1.0.83"
 ic-web3-rs = "0.1.6"
-radix-transactions = { git = "https://github.com/radixdlt/radixdlt-scrypto" }
-radix-common = { git = "https://github.com/radixdlt/radixdlt-scrypto" }
+radix-transactions = "1.2.0"
+radix-common = "1.2.0"
 ic-cdk = "0.11.3"
 futures = "0.3.30"
 async-trait = "0.1.80"
