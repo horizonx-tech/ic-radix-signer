@@ -108,4 +108,29 @@ impl ICSigner {
 }
 
 #[cfg(test)]
-mod test {}
+mod test {
+    use std::str::FromStr;
+
+    use transaction::prelude::{Hash, Secp256k1Signature};
+
+    #[test]
+    fn test_put_get_remove() {
+        let hash =
+            Hash::from_str("b177968c9c68877dc8d33e25759183c556379daa45a4d78a2b91c70133c873ca")
+                .unwrap()
+                .to_vec();
+        // 65 bytes: message + recovery id
+        let sig = vec![
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
+            24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
+            46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64,
+        ];
+        let signature = Secp256k1Signature::try_from(sig.as_slice()).unwrap();
+        super::put_to_context(hash.clone(), signature.clone());
+        let result = super::get_from_context(hash.clone());
+        assert_eq!(result, Some(signature.clone()));
+        super::remove_from_context(hash.clone());
+        let result = super::get_from_context(hash.clone());
+        assert_eq!(result, None);
+    }
+}
