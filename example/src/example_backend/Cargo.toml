@@ -9,9 +9,8 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
-candid = "0.10"
+candid = "0.9"
 ic-cdk = "0.11.3"
 ic-radix-signer = { path = "../../../" }
 anyhow = "1.0.83"
 ic-web3-rs = "0.1.6"
-radix-transactions = { git = "https://github.com/radixdlt/radixdlt-scrypto" }
