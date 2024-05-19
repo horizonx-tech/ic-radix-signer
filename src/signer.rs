@@ -13,6 +13,7 @@ pub struct ICSigner {
 }
 
 thread_local! {
+    // TODO: This is a temporary solution. We should use a more sophisticated way to return the signature.
     static CONTEXT: RefCell<HashMap<Vec<u8>,Secp256k1Signature>> = RefCell::new(HashMap::new());
 }
 
