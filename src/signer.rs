@@ -2,8 +2,9 @@ use std::{cell::RefCell, collections::HashMap};
 
 use anyhow::Result;
 use ic_web3_rs::ic::{get_public_key, ic_raw_sign, KeyInfo};
-use transaction::{
-    prelude::{IsHash, PublicKey, Secp256k1PublicKey, Secp256k1Signature},
+use radix_common::crypto::{IsHash, PublicKey, Secp256k1PublicKey, Secp256k1Signature};
+use radix_transactions::{
+    model::{SignatureV1, SignatureWithPublicKeyV1},
     signing::Signer,
 };
 
@@ -51,14 +52,11 @@ fn remove_from_context(hash: Vec<u8>) {
 }
 
 impl Signer for ICSigner {
-    fn public_key(&self) -> transaction::prelude::PublicKey {
+    fn public_key(&self) -> PublicKey {
         PublicKey::from(self.public_key)
     }
 
-    fn sign_with_public_key(
-        &self,
-        message_hash: &impl transaction::prelude::IsHash,
-    ) -> transaction::prelude::SignatureWithPublicKeyV1 {
+    fn sign_with_public_key(&self, message_hash: &impl IsHash) -> SignatureWithPublicKeyV1 {
         let hash_slice = message_hash.as_slice().to_vec();
         let hash = Box::new(hash_slice.clone());
         let key = Box::new(self.key_info.clone().to_owned());
@@ -71,10 +69,7 @@ impl Signer for ICSigner {
         result.unwrap().into()
     }
 
-    fn sign_without_public_key(
-        &self,
-        message_hash: &impl transaction::prelude::IsHash,
-    ) -> transaction::prelude::SignatureV1 {
+    fn sign_without_public_key(&self, message_hash: &impl IsHash) -> SignatureV1 {
         let key = Box::new(self.key_info.clone().to_owned());
         let hash_slice = message_hash.as_slice().to_vec();
         let h = Box::new(hash_slice.clone());
@@ -112,7 +107,7 @@ impl ICSigner {
 mod test {
     use std::str::FromStr;
 
-    use transaction::prelude::{Hash, Secp256k1Signature};
+    use radix_common::crypto::{Hash, Secp256k1Signature};
 
     #[test]
     fn test_put_get_remove() {
