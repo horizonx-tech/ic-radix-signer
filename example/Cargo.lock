@@ -517,6 +517,7 @@ dependencies = [
  "hex",
  "ic-cdk",
  "ic-radix-signer",
+ "radix-common",
 ]
 
 [[package]]

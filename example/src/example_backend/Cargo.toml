@@ -14,3 +14,4 @@ ic-cdk = "0.11.3"
 ic-radix-signer = { path = "../../../" }
 anyhow = "1.0.83"
 hex = "0.4.3"
+radix-common = "1.2.0"

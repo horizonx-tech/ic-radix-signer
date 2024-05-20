@@ -1,3 +1,4 @@
 service : {
-    "test_sign": () -> (text)
+    "test_sign": () -> (text);
+    "account_address": () -> (text);
 }
